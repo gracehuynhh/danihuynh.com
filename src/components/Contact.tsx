@@ -64,9 +64,9 @@ export default function Contact() {
     };
 
     return (
-        <section id="contact" className="py-14 px-6">
-            <div className="section-divider mb-12" />
-            <div className="max-w-3xl mx-auto text-center">
+        <section id="contact" className="py-8 px-6">
+            <div className="section-divider mb-6" />
+            <div className="max-w-5xl mx-auto text-center">
 
                 <Badge
                     variant="outline"
@@ -81,16 +81,16 @@ export default function Contact() {
                     )}
                 </Badge>
 
-                <h2 className="text-4xl md:text-5xl font-black text-foreground mb-2">
-                    {t("Let's ", "Bắt đầu ")}
+                <h2 className="text-4xl md:text-5xl font-black mb-2">
+                    <span className="hero-heading">{t("Let's ", "Bắt đầu ")}</span>
                     <span className="gradient-text">{t("talk", "ngay thôi")}</span>
                 </h2>
-                <p className="text-muted-foreground text-sm mb-10">
+                <p className="text-muted-foreground text-sm mb-7">
                     {t("Have questions? I personally reply to everyone.", "Có thắc mắc? Tôi đích thân trả lời tất cả.")}
                 </p>
 
                 {/* Contact cards grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-12">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
                     {contactMethods.map((m) => {
                         const Icon = ICONS[m.title];
                         const color = COLORS[m.title];
@@ -181,11 +181,11 @@ export default function Contact() {
                 {/* CTA banner */}
                 <Card className="glow-primary border-primary/20 bg-card rounded-3xl overflow-hidden">
                     <div className="absolute inset-0 bg-primary/3 pointer-events-none" />
-                    <CardContent className="relative z-10 p-10">
+                    <CardContent className="relative z-10 p-7">
                         <h3 className="text-2xl font-black text-card-foreground mb-2">
                             {t("Ready to level up with AI?", "Sẵn sàng nâng cấp bản thân với AI?")}
                         </h3>
-                        <p className="text-muted-foreground text-sm mb-7">
+                        <p className="text-muted-foreground text-sm mb-5">
                             {t("Every day you wait is a day someone else gets ahead.", "Mỗi ngày bỏ lỡ là một ngày người khác vượt qua bạn.")}
                         </p>
                         <Button asChild className="btn-primary border-0 text-white font-semibold rounded-xl px-8">

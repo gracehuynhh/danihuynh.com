@@ -7,18 +7,19 @@ import Footer from "@/components/Footer";
 import { useSiteSettings, SECTIONS, SectionId } from "@/context/SiteSettingsContext";
 
 // Lazy load below-fold sections for faster initial paint
-const About = lazy(() => import("@/components/About"));
+
 const Courses = lazy(() => import("@/components/Courses"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
 const Contact = lazy(() => import("@/components/Contact"));
+const YouTubeDashboard = lazy(() => import("@/components/YouTubeDashboard"));
 
 const SECTION_COMPONENTS: Record<string, React.ComponentType> = {
-    hero: Hero, about: About, courses: Courses,
+    hero: Hero, courses: Courses,
     testimonials: Testimonials, contact: Contact,
 };
 
 const SectionSkeleton = () => (
-    <div className="py-14 px-6">
+    <div className="py-8 px-6">
         <div className="max-w-5xl mx-auto">
             <div className="h-64 rounded-3xl bg-muted/50 animate-pulse" />
         </div>
@@ -51,6 +52,10 @@ export default function HomePage() {
                     </Suspense>
                 );
             })}
+            {/* YouTube Dashboard showcase */}
+            <Suspense fallback={<SectionSkeleton />}>
+                <YouTubeDashboard />
+            </Suspense>
             <Footer />
         </main>
     );

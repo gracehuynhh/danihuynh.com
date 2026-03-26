@@ -14,6 +14,7 @@ import { useLang } from "@/context/LangContext";
 import { useAuth } from "@/context/AuthContext";
 import { useAdmin } from "@/hooks/useAdmin";
 import { DaniLogo } from "@/components/DaniLogo";
+import AuthDialog from "@/components/AuthDialog";
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -28,7 +29,6 @@ export default function Navbar() {
     }, []);
 
     const navLinks = [
-        { label: t("About", "Về tôi"), href: "/#about" },
         { label: t("Courses", "Khóa học"), href: "/#courses" },
         { label: t("Blog", "Blog"), href: "/blog" },
         { label: t("Contact", "Liên hệ"), href: "/#contact" },
@@ -60,7 +60,7 @@ export default function Navbar() {
 
     return (
         <header
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "glass border-b shadow-sm shadow-black/8" : "bg-transparent"
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "glass" : "bg-transparent"
                 }`}
         >
             <div className="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
@@ -99,9 +99,11 @@ export default function Navbar() {
                             </Button>
                         </>
                     ) : (
-                        <Button asChild size="sm" className="btn-primary border-0 text-white rounded-lg px-4">
-                            <a href="/login">{t("Sign In", "Đăng nhập")}</a>
-                        </Button>
+                        <AuthDialog>
+                            <Button size="sm" className="btn-primary border-0 text-white rounded-lg px-4 cursor-pointer">
+                                {t("Sign In", "Đăng nhập")}
+                            </Button>
+                        </AuthDialog>
                     )}
                 </div>
 
@@ -142,9 +144,11 @@ export default function Navbar() {
                                             </a>
                                         </Button>
                                     ) : (
-                                        <Button asChild className="btn-primary border-0 text-white w-full">
-                                            <a href="/login">{t("Sign In", "Đăng nhập")}</a>
-                                        </Button>
+                                        <AuthDialog>
+                                            <Button className="btn-primary border-0 text-white w-full cursor-pointer">
+                                                {t("Sign In", "Đăng nhập")}
+                                            </Button>
+                                        </AuthDialog>
                                     )}
                                 </SheetClose>
                             </div>

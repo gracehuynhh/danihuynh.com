@@ -72,8 +72,8 @@ export default function About() {
                         </Badge>
                     </motion.div>
 
-                    <motion.h2 {...anim(0.15)} className="text-4xl md:text-5xl font-black mb-5 text-foreground leading-tight">
-                        {t("Hey, I'm ", "Xin chào, ")}
+                    <motion.h2 {...anim(0.15)} className="text-4xl md:text-5xl font-black mb-5 leading-tight">
+                        <span className="hero-heading">{t("Hey, I'm ", "Xin chào, ")}</span>
                         <span className="gradient-text">Dani</span>
                     </motion.h2>
 

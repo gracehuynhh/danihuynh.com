@@ -71,13 +71,13 @@ export default function Testimonials() {
     const inView = useInView(ref, { once: true, margin: "-60px" });
 
     return (
-        <section id="testimonials" className="py-14 px-6" ref={ref}>
-            <div className="section-divider mb-12" />
+        <section id="testimonials" className="py-8 px-6" ref={ref}>
+            <div className="section-divider mb-6" />
             <div className="max-w-5xl mx-auto">
 
                 {/* Header */}
                 <motion.div
-                    className="text-center mb-12"
+                    className="text-center mb-8"
                     initial={{ opacity: 0, y: 20 }}
                     animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.5 }}
@@ -88,8 +88,8 @@ export default function Testimonials() {
                     >
                         {t("Student Results", "Kết quả học viên")}
                     </Badge>
-                    <h2 className="text-4xl md:text-5xl font-black text-foreground">
-                        {t("Real ", "Kết quả ")}<span className="gradient-text">{t("outcomes", "thực tế")}</span>
+                    <h2 className="text-4xl md:text-5xl font-black">
+                        <span className="hero-heading">{t("Real ", "Kết quả ")}</span><span className="gradient-text">{t("outcomes", "thực tế")}</span>
                     </h2>
                 </motion.div>
 

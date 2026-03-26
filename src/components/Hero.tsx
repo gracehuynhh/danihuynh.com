@@ -3,133 +3,195 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { ArrowDown, Users, BookOpen, Star, TrendingUp } from "lucide-react";
+import { ArrowDown, Users, BookOpen, Star, TrendingUp, Youtube, Code2, Bot, Sparkles } from "lucide-react";
 import { useLang } from "@/context/LangContext";
+import DotDistortion from "./DotDistortion";
+import FlipWords from "./FlipWords";
 
 const stats = [
     { icon: Users, value: "2,000+", en: "Students", vi: "Học viên" },
     { icon: BookOpen, value: "3", en: "Courses", vi: "Khóa học" },
     { icon: Star, value: "4.9★", en: "Rating", vi: "Đánh giá" },
-    { icon: TrendingUp, value: "95%", en: "Success", vi: "Tỷ lệ thành công" },
+    { icon: TrendingUp, value: "95%", en: "Success", vi: "Thành công" },
+];
+
+const floatingItems = [
+    { icon: Youtube, color: "#ef4444", label: "YouTube", left: "8%", top: "8%", delay: 0 },
+    { icon: Code2, color: "#3b82f6", label: "Web Dev", left: "58%", top: "5%", delay: 0.3 },
+    { icon: Bot, color: "#8b5cf6", label: "AI Tools", left: "5%", top: "60%", delay: 0.6 },
+    { icon: Sparkles, color: "#f59e0b", label: "Vibecoding", left: "55%", top: "65%", delay: 0.9 },
 ];
 
 export default function Hero() {
     const { t } = useLang();
 
     return (
-        <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-28 pb-12 overflow-hidden">
-            {/* Background */}
+        <section className="relative min-h-[80vh] flex items-center px-6 pt-16 pb-4 overflow-hidden">
+            {/* ── Dot Distortion Shader ── */}
+            <DotDistortion />
+
+            {/* Background blobs */}
             <div className="absolute inset-0 pointer-events-none">
                 <motion.div
-                    className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[380px] rounded-full bg-primary/5 blur-[120px]"
-                    animate={{ opacity: [0.25, 0.55, 0.25] }}
+                    className="absolute top-1/4 left-1/3 w-[500px] h-[350px] rounded-full bg-primary/5 blur-[120px]"
+                    animate={{ opacity: [0.2, 0.45, 0.2] }}
                     transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                 />
-                <div
-                    className="absolute inset-0 opacity-[0.018]"
-                    style={{
-                        backgroundImage: `linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px)`,
-                        backgroundSize: "72px 72px",
-                    }}
+                <motion.div
+                    className="absolute bottom-1/3 right-1/4 w-[350px] h-[250px] rounded-full bg-violet-500/5 blur-[100px]"
+                    animate={{ opacity: [0.15, 0.35, 0.15] }}
+                    transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 3 }}
                 />
             </div>
 
-            <div className="relative z-10 max-w-4xl mx-auto text-center">
-                {/* Badge */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0 }}
-                >
-                    <Badge
-                        variant="outline"
-                        className="mb-6 rounded-full border-primary/25 bg-primary/8 text-primary px-4 py-1 text-[11px] font-semibold uppercase tracking-widest gap-1.5"
-                    >
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                        {t("Open for enrollment · 2026", "Mở đăng ký · 2026")}
-                    </Badge>
-                </motion.div>
+            <div className="relative z-10 max-w-5xl mx-auto w-full">
+                <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-10">
 
-                {/* Heading */}
-                <motion.h1
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.55, delay: 0.1 }}
-                    className="text-6xl md:text-[88px] font-black leading-[0.95] tracking-tight mb-6 text-foreground"
-                >
-                    {t("Make Money ", "Kiếm Tiền ")}
-                    {t("with ", "với ")}
-                    <span className="gradient-text">AI 2026</span>
-                </motion.h1>
-
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                    className="text-muted-foreground text-base md:text-lg max-w-md mx-auto mb-2 leading-relaxed"
-                >
-                    {t(
-                        "AI-powered courses on Web Dev, YouTube & Vibecoding.",
-                        "Khóa học AI thực chiến: Làm Web, YouTube & Vibecoding."
-                    )}
-                </motion.p>
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="text-muted-foreground/50 text-sm mb-10"
-                >
-                    {t("Real skills. Real income. No fluff.", "Kỹ năng thực. Thu nhập thực. Không lý thuyết.")}
-                </motion.p>
-
-                {/* CTAs */}
-                <motion.div
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.35 }}
-                    className="flex flex-col sm:flex-row gap-3 justify-center mb-10"
-                >
-                    <Button asChild size="lg" className="btn-primary border-0 text-white rounded-xl px-8 font-semibold">
-                        <a href="#courses">{t("Browse Courses", "Xem khóa học")} →</a>
-                    </Button>
-                    <Button asChild size="lg" variant="outline" className="rounded-xl px-8 border-border text-muted-foreground hover:text-foreground hover:bg-secondary">
-                        <a href="#about">{t("Meet Dani", "Về Dani")}</a>
-                    </Button>
-                </motion.div>
-
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.4, delay: 0.45 }}
-                >
-                    <Separator className="mb-8 bg-border max-w-xs mx-auto" />
-                </motion.div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-4 gap-3 max-w-lg mx-auto">
-                    {stats.map(({ icon: Icon, value, en, vi }, i) => (
+                    {/* ===== LEFT: Text ===== */}
+                    <div className="flex-1 text-center lg:text-left">
                         <motion.div
-                            key={en}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
-                            whileHover={{ y: -4, scale: 1.04, transition: { duration: 0.15 } }}
-                            className="glass rounded-2xl p-3 text-center hover:border-primary/20 transition-colors group cursor-default"
+                            transition={{ duration: 0.5 }}
                         >
-                            <Icon className="w-4 h-4 text-primary mx-auto mb-1.5 group-hover:scale-110 transition-transform" />
-                            <div className="text-lg font-black text-foreground">{value}</div>
-                            <div className="text-[10px] text-muted-foreground mt-0.5 uppercase tracking-wide">
-                                {t(en, vi)}
+                            <Badge
+                                variant="outline"
+                                className="mb-5 rounded-full border-primary/25 bg-primary/8 text-primary px-4 py-1 text-[11px] font-semibold uppercase tracking-widest gap-1.5"
+                            >
+                                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                                {t("Open · 2026", "Mở đăng ký · 2026")}
+                            </Badge>
+                        </motion.div>
+
+                        <motion.h1
+                            initial={{ opacity: 0, y: 24 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.55, delay: 0.1 }}
+                            className="text-5xl md:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight mb-5"
+                        >
+                            <span className="hero-heading">{t("Make Money ", "Kiếm Tiền ")}{t("with ", "với ")}</span>
+                            <span className="gradient-text">AI 2026</span>
+                        </motion.h1>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="text-muted-foreground text-base md:text-lg max-w-md mx-auto lg:mx-0 mb-7 leading-relaxed"
+                        >
+                            <FlipWords
+                                words={t(
+                                    "Real skills,Real income,No fluff,AI-powered",
+                                    "Kỹ năng thực,Thu nhập thực,Không lý thuyết,Tích hợp AI"
+                                ).split(",")}
+                                className="text-foreground font-semibold"
+                            />
+                            {" · "}
+                            {t("from day one.", "từ ngày đầu.")}
+                        </motion.div>
+
+                        {/* CTAs */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 16 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                            className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-8"
+                        >
+                            <Button asChild size="lg" className="btn-primary border-0 text-white rounded-xl px-8 font-semibold">
+                                <a href="#courses">{t("Browse Courses", "Xem khóa học")} →</a>
+                            </Button>
+                            <Button asChild size="lg" variant="outline" className="rounded-xl px-8 border-border text-muted-foreground hover:text-foreground hover:bg-secondary">
+                                <a href="#contact">{t("Contact", "Liên hệ")}</a>
+                            </Button>
+                        </motion.div>
+
+                        {/* Stats */}
+                        <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+                            {stats.map(({ icon: Icon, value, en, vi }, i) => (
+                                <motion.div
+                                    key={en}
+                                    initial={{ opacity: 0, y: 12 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.3, delay: 0.4 + i * 0.06 }}
+                                    whileHover={{ y: -2, transition: { duration: 0.12 } }}
+                                    className="flex items-center gap-1.5 glass rounded-full px-3 py-1.5 cursor-default hover:border-primary/20 transition-colors"
+                                    title={t(en, vi)}
+                                >
+                                    <Icon className="w-3.5 h-3.5 text-primary" />
+                                    <span className="text-xs font-bold text-foreground">{value}</span>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* ===== RIGHT: Animated Orb ===== */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.7, delay: 0.3 }}
+                        className="hidden lg:block relative w-[320px] h-[320px] flex-shrink-0"
+                    >
+                        <motion.div
+                            className="absolute inset-12 rounded-full"
+                            style={{
+                                background: "radial-gradient(circle, rgba(99,102,241,0.1) 0%, rgba(139,92,246,0.05) 50%, transparent 70%)",
+                            }}
+                            animate={{ scale: [1, 1.06, 1] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                        />
+
+                        <motion.div
+                            className="absolute inset-8 rounded-full border border-dashed border-primary/12"
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                        />
+                        <motion.div
+                            className="absolute inset-20 rounded-full border border-dashed border-violet-400/8"
+                            animate={{ rotate: -360 }}
+                            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                        />
+
+                        {floatingItems.map((item, i) => (
+                            <motion.div
+                                key={item.label}
+                                className="absolute flex items-center gap-1.5 glass rounded-lg px-2.5 py-1.5 shadow-md cursor-default"
+                                style={{ left: item.left, top: item.top }}
+                                initial={{ opacity: 0, scale: 0.5 }}
+                                animate={{ opacity: 1, scale: 1, y: [0, -6, 0] }}
+                                transition={{
+                                    opacity: { duration: 0.4, delay: 0.5 + item.delay },
+                                    scale: { duration: 0.4, delay: 0.5 + item.delay },
+                                    y: { duration: 3 + i * 0.4, repeat: Infinity, ease: "easeInOut", delay: item.delay },
+                                }}
+                                whileHover={{ scale: 1.08, transition: { duration: 0.12 } }}
+                            >
+                                <div
+                                    className="w-7 h-7 rounded-md flex items-center justify-center"
+                                    style={{ background: `${item.color}15` }}
+                                >
+                                    <item.icon className="w-3.5 h-3.5" style={{ color: item.color }} />
+                                </div>
+                                <span className="text-[11px] font-semibold text-card-foreground">{item.label}</span>
+                            </motion.div>
+                        ))}
+
+                        <motion.div
+                            className="absolute inset-0 flex items-center justify-center"
+                            animate={{ scale: [1, 1.02, 1] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                            <div className="text-center">
+                                <div className="text-3xl font-black gradient-text">AI</div>
+                                <div className="text-[9px] text-muted-foreground/40 uppercase tracking-widest mt-0.5">Powered</div>
                             </div>
                         </motion.div>
-                    ))}
+                    </motion.div>
                 </div>
             </div>
 
             <a
-                href="#about"
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+                href="#courses"
+                className="absolute bottom-6 left-1/2 -translate-x-1/2 text-muted-foreground/30 hover:text-muted-foreground transition-colors"
             >
                 <ArrowDown className="w-4 h-4 animate-bounce" />
             </a>

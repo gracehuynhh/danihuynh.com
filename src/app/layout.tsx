@@ -34,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi" suppressHydrationWarning>
-      <body className={`${inter.variable} ${playfair.variable} antialiased bg-gradient-animated`}>
+      <body className={`${inter.variable} ${playfair.variable} antialiased bg-gradient-animated`} suppressHydrationWarning>
         <AuthWrapper>{children}</AuthWrapper>
       </body>
     </html>
