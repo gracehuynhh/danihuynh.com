@@ -79,6 +79,8 @@ export default function Hero() {
                             transition={{ duration: 0.5, delay: 0.2 }}
                             className="text-muted-foreground text-base md:text-lg max-w-md mx-auto lg:mx-0 mb-7 leading-relaxed"
                         >
+                            {t("From day one", "Từ ngày đầu")}
+                            {" · "}
                             <FlipWords
                                 words={t(
                                     "Real skills,Real income,No fluff,AI-powered",
@@ -86,8 +88,6 @@ export default function Hero() {
                                 ).split(",")}
                                 className="text-foreground font-semibold"
                             />
-                            {" · "}
-                            {t("from day one.", "từ ngày đầu.")}
                         </motion.div>
 
                         {/* CTAs */}
