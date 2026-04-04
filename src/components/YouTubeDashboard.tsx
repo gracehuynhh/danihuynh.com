@@ -339,7 +339,7 @@ export default function YouTubeDashboard() {
                                             <span className="text-[11px] font-semibold text-card-foreground">Realtime</span>
                                         </div>
                                         <div className="text-3xl font-black text-card-foreground">475,200</div>
-                                        <p className="text-[10px] text-muted-foreground/50">{t("Subscribers", "Subscribers")}</p>
+                                        <p className="text-[10px] text-muted-foreground/50">{t("Views", "Lượt xem")}</p>
                                         <div className="flex items-end gap-px h-8 mt-2.5">
                                             {Array.from({ length: 28 }, (_, i) => (
                                                 <motion.div
