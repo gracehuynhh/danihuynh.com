@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { Bot } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLang } from "@/context/LangContext";
 
 const achievements = [
@@ -37,7 +37,8 @@ export default function About() {
                         <div
                             className="absolute inset-0 bg-primary/10 rounded-full blur-3xl scale-125 animate-pulse-slow"
                         />
-                        <Avatar className="w-52 h-52 border-2 border-border ring-4 ring-primary/10 relative z-10">
+                        <Avatar className="w-52 h-52 border-2 border-border ring-4 ring-primary/10 relative z-10 overflow-hidden">
+                            <AvatarImage src="/avatar.png" alt="Dani" className="object-cover" />
                             <AvatarFallback className="bg-gradient-to-br from-primary/30 to-primary/10 text-4xl font-black text-primary">
                                 D
                             </AvatarFallback>

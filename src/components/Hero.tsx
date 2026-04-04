@@ -180,18 +180,14 @@ export default function Hero() {
                         ))}
 
                         <motion.div
-                            className="absolute inset-[30px] rounded-full overflow-hidden border-[6px] border-background shadow-2xl z-10"
+                            className="absolute inset-0 flex items-center justify-center"
                             animate={{ scale: [1, 1.02, 1] }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                         >
-                            <Image
-                                src="/avatar.png"
-                                alt="Dani Huynh"
-                                fill
-                                className="object-cover object-center"
-                                sizes="(max-width: 768px) 250px, 320px"
-                                priority
-                            />
+                            <div className="text-center">
+                                <div className="text-3xl font-black gradient-text">AI</div>
+                                <div className="text-[9px] text-muted-foreground/40 uppercase tracking-widest mt-0.5">Powered</div>
+                            </div>
                         </motion.div>
                     </div>
                 </div>
