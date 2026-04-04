@@ -9,8 +9,8 @@ const footerColumns = [
         titleEn: "Courses",
         titleVi: "Khóa học",
         links: [
-            { en: "YouTube × AI", vi: "YouTube × AI", href: "/courses/youtube-ai" },
-            { en: "YouTube 1-on-1", vi: "YouTube 1 kèm 1", href: "/courses/youtube-1on1" },
+            { en: "YouTube × AI", vi: "YouTube × AI", href: "/courses/youtube-basic" },
+            { en: "YouTube 1-on-1", vi: "YouTube Nâng cao", href: "/courses/youtube-advanced" },
             { en: "Shopee Affiliate", vi: "Shopee Affiliate (Google Meet)", href: "/courses/shopee-affiliate" },
         ],
     },

@@ -88,9 +88,6 @@ export default function Contact() {
                     <span className="hero-heading">{t("Let's ", "Bắt đầu ")}</span>
                     <span className="gradient-text">{t("talk", "ngay thôi")}</span>
                 </h2>
-                <p className="text-muted-foreground text-sm mb-7">
-                    {t("Have questions? I personally reply to everyone.", "Có thắc mắc? Tôi đích thân trả lời tất cả.")}
-                </p>
 
                 {/* Contact cards grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
@@ -220,13 +217,6 @@ export default function Contact() {
                             </a>
                         </Button>
                     </div>
-                </div>
-
-                <div className="flex justify-center mt-12 mb-4">
-                    <p className="text-muted-foreground/40 text-[11px] flex items-center gap-1 font-medium">
-                        <Sparkles className="w-3 h-3" />
-                        {t("Built with Next.js & AI", "Xây dựng bằng Next.js & AI")}
-                    </p>
                 </div>
             </div>
         </section>
