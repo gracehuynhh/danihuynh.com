@@ -11,6 +11,7 @@ interface AuthContextType {
     adminLoading: boolean;
     signUp: (email: string, password: string) => Promise<{ error: string | null }>;
     signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+    signInWithGoogle: () => Promise<{ error: string | null }>;
     signOut: () => Promise<void>;
 }
 
@@ -21,6 +22,7 @@ const AuthContext = createContext<AuthContextType>({
     adminLoading: true,
     signUp: async () => ({ error: null }),
     signIn: async () => ({ error: null }),
+    signInWithGoogle: async () => ({ error: null }),
     signOut: async () => { },
 });
 
@@ -85,13 +87,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { error: error?.message ?? null };
     };
 
+    const signInWithGoogle = async () => {
+        // Automatically redirects to provider
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: `${window.location.origin}/dashboard`
+            }
+        });
+        return { error: error?.message ?? null };
+    };
+
     const signOut = async () => {
         await supabase.auth.signOut();
         setIsAdmin(false);
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, isAdmin, adminLoading, signUp, signIn, signOut }}>
+        <AuthContext.Provider value={{ user, loading, isAdmin, adminLoading, signUp, signIn, signInWithGoogle, signOut }}>
             {children}
         </AuthContext.Provider>
     );
