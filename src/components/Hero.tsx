@@ -17,7 +17,7 @@ const Player = dynamic(() => import("@lottiefiles/react-lottie-player").then(mod
 const DotDistortion = lazy(() => import("./DotDistortion"));
 
 const stats = [
-    { icon: Users, value: "2,000+", en: "Students", vi: "Học viên" },
+    { icon: Users, value: "20+", en: "Students", vi: "Học viên" },
     { icon: BookOpen, value: "3", en: "Courses", vi: "Khóa học" },
     { icon: Star, value: "4.9★", en: "Rating", vi: "Đánh giá" },
     { icon: TrendingUp, value: "95%", en: "Success", vi: "Thành công" },
@@ -112,7 +112,7 @@ export default function Hero() {
                                         ))}
                                     </div>
                                     <p className="text-[11px] font-bold text-foreground">
-                                        {t("2,000+ happy students", "2.000+ học viên tham gia")}
+                                        {t("20+ happy students", "20+ học viên tham gia")}
                                     </p>
                                 </div>
                             </div>
