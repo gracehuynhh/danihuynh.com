@@ -18,13 +18,13 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Dani Huynh | AI-Powered Web Developer & Educator",
+  title: "Dani Huynh | Học kiếm tiền & Ứng dụng AI thực chiến",
   description:
-    "Learn Web Development, YouTube Content Creation, and Vibecoding — all supercharged with AI. Real-world courses by Dani Huynh.",
-  keywords: "web developer, youtube, vibecoding, AI courses, online learning",
+    "Khóa học thực chiến về ứng dụng AI làm YouTube, Shopee Affiliate và Lập trình. Học kiến thức thực tế từ Dani Huynh để bắt đầu tạo ra thu nhập.",
+  keywords: "ai, youtube, affiliate, kiếm tiền online, tiktok, vibecoding, dani huynh",
   openGraph: {
-    title: "Dani Huynh | AI-Powered Web Developer & Educator",
-    description: "Learn with Dani — from coding to making money online with AI",
+    title: "Dani Huynh | Học kiếm tiền & Ứng dụng AI thực chiến",
+    description: "Bắt đầu xây dựng kỹ năng và tạo ra thu nhập ngay hôm nay với các khóa học AI thực chiến.",
     type: "website",
   },
 };
