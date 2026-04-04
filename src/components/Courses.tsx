@@ -383,7 +383,7 @@ export default function Courses() {
                                                     else document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
                                                 }}
                                                 size="sm"
-                                                className="rounded-xl font-semibold text-[13px] text-white border-0 px-5 py-2.5
+                                                className="cursor-pointer rounded-xl font-semibold text-[13px] text-white border-0 px-5 py-2.5
                                                     transition-all duration-300 hover:brightness-110 active:scale-[0.97]
                                                     group-hover:shadow-lg"
                                                 style={{
