@@ -12,6 +12,7 @@ import {
     DialogDescription,
 } from "@/components/ui/dialog";
 import { Sparkles, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { DaniLogo } from "@/components/DaniLogo";
 
 interface AuthDialogProps {
     children: React.ReactNode;
@@ -76,7 +77,7 @@ export default function AuthDialog({ children }: AuthDialogProps) {
                         <div className="w-9 h-9 rounded-lg btn-primary flex items-center justify-center">
                             <Sparkles className="w-4.5 h-4.5 text-white" />
                         </div>
-                        <span className="font-bold text-lg gradient-text">DaniHuynh</span>
+                        <DaniLogo height={20} className="ml-1" />
                     </div>
 
                     <DialogTitle className="text-2xl font-black mb-1">
