@@ -92,12 +92,6 @@
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
-
-  /* Below-fold sections paint lazily */
-  section {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 300px;
-  }
 }
 
 /* ───── Scrollbar ───── */
@@ -183,7 +177,7 @@
   transform: translateY(-1px);
 }
 
-/* ───── Card hover ───── */
+/* ───── Course card hover ───── */
 .course-card {
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
@@ -194,7 +188,47 @@
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(37, 99, 235, 0.1);
 }
 
-/* ───── Nav underline ───── */
+/* ───── CTA button shine sweep ───── */
+@keyframes cta-shine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* ───── Floating orbs — CSS only, zero CLS ───── */
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(20px, -15px); }
+}
+@keyframes float-slow-reverse {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-18px, 12px); }
+}
+.animate-float-slow {
+  animation: float-slow 12s ease-in-out infinite;
+  will-change: transform;
+}
+.animate-float-slow-reverse {
+  animation: float-slow-reverse 10s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ───── CSS fade-in — removed, was causing CLS (opacity:0 → 1 shift) ───── */
+
+/* ───── Slow pulse for background blobs — opacity-only, no transform to prevent CLS ───── */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.45; }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 7s ease-in-out infinite;
+  will-change: opacity;
+}
+.animate-pulse-slow-delayed {
+  animation: pulse-slow 9s ease-in-out infinite 3s;
+  will-change: opacity;
+  opacity: 0.2; /* set initial opacity to prevent jump when animation starts after 3s delay */
+}
+
 .nav-link {
   position: relative;
 }

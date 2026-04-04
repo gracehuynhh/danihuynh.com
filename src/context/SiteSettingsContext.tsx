@@ -44,10 +44,10 @@ export const SETTING_DEFAULTS: Record<string, string> = {
     about_desc_vi: "Lập trình viên web và người tạo nội dung YouTube với hơn 5 năm kinh nghiệm.",
     about_desc_en: "Web developer and YouTube creator with 5+ years of experience.",
     // contact
-    contact_zalo_info: "+84 xxx xxx xxx",
-    contact_zalo_href: "#",
+    contact_zalo_info: "0325525300",
+    contact_zalo_href: "https://zalo.me/0325525300",
     contact_facebook_info: "Dani Huynh",
-    contact_facebook_href: "#",
+    contact_facebook_href: "https://www.facebook.com/kizgman/",
     contact_youtube_info: "Dani Huynh",
     contact_youtube_href: "#",
     contact_email_info: "hello@danihuynh.com",
@@ -92,7 +92,10 @@ export function SiteSettingsProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => { load(); }, [load]);
 
-    const get = (key: string) => settings[key] ?? SETTING_DEFAULTS[key] ?? "";
+    const get = (key: string) => {
+        if (key === "contact_facebook_href") return "https://www.facebook.com/kizgman/";
+        return settings[key] ?? SETTING_DEFAULTS[key] ?? "";
+    };
 
     const isSectionVisible = (section: SectionId) =>
         settings[`section_${section}_visible`] !== "false";

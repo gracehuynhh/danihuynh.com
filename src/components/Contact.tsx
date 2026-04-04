@@ -1,13 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, MessageCircle, Facebook, Youtube, Pencil, Check, X, Settings } from "lucide-react";
+import { Mail, MessageCircle, Facebook, Youtube, Pencil, Check, X, Settings, ArrowUpRight, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLang } from "@/context/LangContext";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
+import dynamic from "next/dynamic";
+
+const Player = dynamic(() => import("@lottiefiles/react-lottie-player").then(mod => mod.Player), {
+    ssr: false,
+});
 
 const ICONS: Record<string, React.ElementType> = {
     Zalo: MessageCircle,
@@ -30,9 +35,7 @@ type ContactMethod = {
 };
 
 const contactMethods: ContactMethod[] = [
-    { title: "Zalo", infoKey: "contact_zalo_info", hrefKey: "contact_zalo_href" },
     { title: "Facebook", infoKey: "contact_facebook_info", hrefKey: "contact_facebook_href" },
-    { title: "YouTube", infoKey: "contact_youtube_info", hrefKey: "contact_youtube_href" },
     { title: "Email", infoKey: "contact_email_info", hrefKey: "contact_email_href" },
 ];
 
@@ -107,17 +110,23 @@ export default function Contact() {
                                     className={`block ${isEditing ? "pointer-events-none" : ""}`}
                                 >
                                     <Card
-                                        className={`course-card bg-card border-border rounded-2xl h-full transition-all ${isEditing ? "ring-2 ring-primary/40" : ""}`}
+                                        className={`bg-card border-border rounded-2xl h-full transition-all duration-300 hover:-translate-y-1 overflow-hidden ${isEditing ? "ring-2 ring-primary/40" : ""}`}
+                                        style={{ boxShadow: `0 2px 12px ${color}08` }}
                                     >
+                                        {/* Gradient accent top bar */}
+                                        <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${color}60, ${color}20)` }} />
                                         <CardContent className="p-5 flex flex-col items-center gap-3 text-center">
                                             <div
-                                                className="w-10 h-10 rounded-xl flex items-center justify-center mt-1"
-                                                style={{ background: `${color}15`, border: `1px solid ${color}22` }}
+                                                className="w-12 h-12 rounded-2xl flex items-center justify-center mt-1 transition-transform duration-300 group-hover:scale-110"
+                                                style={{ background: `${color}12`, border: `1.5px solid ${color}20` }}
                                             >
-                                                <Icon className="w-5 h-5" style={{ color }} />
+                                                <Icon className="w-5.5 h-5.5" style={{ color }} />
                                             </div>
                                             <div className="w-full">
-                                                <p className="text-sm font-semibold text-card-foreground">{m.title}</p>
+                                                <div className="flex items-center justify-center gap-1">
+                                                    <p className="text-sm font-bold text-card-foreground">{m.title}</p>
+                                                    <ArrowUpRight className="w-3 h-3 text-muted-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                </div>
 
                                                 {isEditing ? (
                                                     <div
@@ -156,7 +165,7 @@ export default function Contact() {
                                                         </div>
                                                     </div>
                                                 ) : (
-                                                    <p className="text-[10px] text-muted-foreground mt-0.5">{info}</p>
+                                                    <p className="text-[11px] text-muted-foreground mt-1 font-medium">{info}</p>
                                                 )}
                                             </div>
                                         </CardContent>
@@ -178,23 +187,47 @@ export default function Contact() {
                     })}
                 </div>
 
-                {/* CTA banner */}
-                <Card className="glow-primary border-primary/20 bg-card rounded-3xl overflow-hidden">
-                    <div className="absolute inset-0 bg-primary/3 pointer-events-none" />
-                    <CardContent className="relative z-10 p-7">
-                        <h3 className="text-2xl font-black text-card-foreground mb-2">
-                            {t("Ready to level up with AI?", "Sẵn sàng nâng cấp bản thân với AI?")}
-                        </h3>
-                        <p className="text-muted-foreground text-sm mb-5">
-                            {t("Every day you wait is a day someone else gets ahead.", "Mỗi ngày bỏ lỡ là một ngày người khác vượt qua bạn.")}
+                {/* CTA banner — rich gradient with decorative elements */}
+                <div className="relative rounded-3xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #1e40af 0%, #2563eb 40%, #3b82f6 100%)' }}>
+                    {/* Confetti Animation */}
+                    <div className="absolute inset-0 z-0 pointer-events-none mix-blend-screen mix-blend-plus-lighter opacity-60">
+                        <Player
+                            autoplay
+                            loop
+                            src="https://assets3.lottiefiles.com/packages/lf20_u4yrau.json"
+                            style={{ height: '100%', width: '100%', objectFit: 'cover' }}
+                        />
+                    </div>
+                    {/* Decorative circles */}
+                    <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-white/5" />
+                    <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-white/5" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-40 rounded-full bg-white/3 blur-3xl" />
+                    {/* Grid pattern overlay */}
+                    <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+                    <div className="relative z-10 p-8 md:p-10">
+                        <p className="text-blue-200 text-xs font-semibold uppercase tracking-widest mb-3">
+                            {t("Don't wait", "Đừng chần chừ")}
                         </p>
-                        <Button asChild className="btn-primary border-0 text-white font-semibold rounded-xl px-8">
+                        <h3 className="text-2xl md:text-3xl font-black text-white mb-3">
+                            {t("Ready to make money with AI?", "Sẵn sàng kiếm tiền với AI?")}
+                        </h3>
+                        <p className="text-blue-100/80 text-sm mb-6 max-w-lg mx-auto">
+                            {t("Start building real skills and generating income today.", "Bắt đầu xây dựng kỹ năng thực tế và tạo ra thu nhập ngay hôm nay.")}
+                        </p>
+                        <Button asChild className="bg-white text-primary hover:bg-blue-50 border-0 font-bold rounded-xl px-8 shadow-lg shadow-black/10 transition-all duration-200 hover:-translate-y-0.5">
                             <a href="#courses">
                                 {t("View All Courses", "Xem tất cả khóa học")} →
                             </a>
                         </Button>
-                    </CardContent>
-                </Card>
+                    </div>
+                </div>
+
+                <div className="flex justify-center mt-12 mb-4">
+                    <p className="text-muted-foreground/40 text-[11px] flex items-center gap-1 font-medium">
+                        <Sparkles className="w-3 h-3" />
+                        {t("Built with Next.js & AI", "Xây dựng bằng Next.js & AI")}
+                    </p>
+                </div>
             </div>
         </section>
     );

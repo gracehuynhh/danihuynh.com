@@ -75,11 +75,11 @@ export default function Testimonials() {
             <div className="section-divider mb-6" />
             <div className="max-w-5xl mx-auto">
 
-                {/* Header */}
+                {/* Header — NO y-shift, opacity only */}
                 <motion.div
                     className="text-center mb-8"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    initial={{ opacity: 0.15 }}
+                    animate={inView ? { opacity: 1 } : { opacity: 0.15 }}
                     transition={{ duration: 0.5 }}
                 >
                     <Badge
@@ -93,14 +93,14 @@ export default function Testimonials() {
                     </h2>
                 </motion.div>
 
-                {/* Masonry grid */}
+                {/* Masonry grid — opacity only, NO y-shift */}
                 <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
                     {testimonials.map((t_, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                            transition={{ duration: 0.45, delay: i * 0.08 }}
+                            initial={{ opacity: 0.15 }}
+                            animate={inView ? { opacity: 1 } : { opacity: 0.15 }}
+                            transition={{ duration: 0.4, delay: i * 0.06 }}
                         >
                             <Card className="course-card bg-card border-border rounded-2xl break-inside-avoid">
                                 <CardContent className="p-5">
@@ -120,8 +120,12 @@ export default function Testimonials() {
                                     <div className="flex items-center gap-3">
                                         <Avatar className="w-9 h-9">
                                             <AvatarFallback
-                                                className="text-xs font-bold text-white"
-                                                style={{ background: `${t_.accent}30`, border: `1px solid ${t_.accent}40` }}
+                                                className="text-xs font-bold"
+                                                style={{
+                                                    background: `linear-gradient(135deg, ${t_.accent}15, ${t_.accent}30)`,
+                                                    border: `1.5px solid ${t_.accent}30`,
+                                                    color: t_.accent,
+                                                }}
                                             >
                                                 {t_.avatar}
                                             </AvatarFallback>

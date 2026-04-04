@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useLang } from "@/context/LangContext";
 
 const achievements = [
-    { value: "5+", en: "Yrs exp.", vi: "Năm KN" },
+    { value: "10+", en: "Yrs exp.", vi: "Năm KN" },
     { value: "2k+", en: "Students", vi: "Học viên" },
     { value: "3", en: "Courses", vi: "Khóa học" },
 ];
@@ -19,9 +19,10 @@ export default function About() {
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-80px" });
 
+    /* Subtle fade — starts slightly visible to avoid perceived CLS */
     const anim = (delay: number) => ({
-        initial: { opacity: 0, y: 24 },
-        animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 },
+        initial: { opacity: 0.15 },
+        animate: inView ? { opacity: 1 } : { opacity: 0.15 },
         transition: { duration: 0.5, delay },
     });
 
@@ -33,10 +34,8 @@ export default function About() {
                 {/* Avatar side */}
                 <motion.div className="relative flex justify-center" {...anim(0)}>
                     <div className="relative">
-                        <motion.div
-                            className="absolute inset-0 bg-primary/10 rounded-full blur-3xl scale-125"
-                            animate={{ opacity: [0.3, 0.6, 0.3], scale: [1.1, 1.25, 1.1] }}
-                            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                        <div
+                            className="absolute inset-0 bg-primary/10 rounded-full blur-3xl scale-125 animate-pulse-slow"
                         />
                         <Avatar className="w-52 h-52 border-2 border-border ring-4 ring-primary/10 relative z-10">
                             <AvatarFallback className="bg-gradient-to-br from-primary/30 to-primary/10 text-4xl font-black text-primary">

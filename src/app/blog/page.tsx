@@ -43,9 +43,9 @@ function PostCard({ post, index, featured }: { post: Post; index: number; featur
     return (
         <motion.article
             ref={ref}
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4, delay: index * 0.08 }}
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.4, delay: index * 0.06 }}
             className="group"
         >
             <Link href={`/blog/${post.slug}`} className="block">
@@ -165,7 +165,7 @@ export default function BlogPage() {
             <main className="max-w-5xl mx-auto px-6 pt-32 pb-20">
 
                 {/* Hero */}
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-14">
+                <div className="text-center mb-14">
                     <Badge variant="outline" className="mb-4 rounded-full border-primary/25 bg-primary/8 text-primary text-[11px] font-semibold uppercase tracking-widest px-3">
                         <Rss className="w-3 h-3 mr-1" /> Blog
                     </Badge>
@@ -176,11 +176,10 @@ export default function BlogPage() {
                     <p className="text-muted-foreground text-sm max-w-xl mx-auto">
                         Chia sẻ thực chiến về AI, YouTube Marketing và Web Development từ người đã làm.
                     </p>
-                </motion.div>
+                </div>
 
                 {/* Search + Tags */}
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-                    className="flex flex-col sm:flex-row gap-3 mb-8">
+                <div className="flex flex-col sm:flex-row gap-3 mb-8">
                     <div className="relative flex-1">
                         <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                         <input
@@ -202,7 +201,7 @@ export default function BlogPage() {
                             </button>
                         ))}
                     </div>
-                </motion.div>
+                </div>
 
                 {/* Posts */}
                 {loading ? (

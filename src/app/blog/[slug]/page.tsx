@@ -91,7 +91,7 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
 
                 {/* Article */}
                 <div className="max-w-3xl mx-auto px-6">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                    <div>
 
                         {/* Breadcrumb */}
                         <div className="flex items-center gap-2 text-xs text-muted-foreground mb-6">
@@ -181,7 +181,7 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
                                 <ArrowLeft className="w-4 h-4" /> Về danh sách bài viết
                             </Link>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </main>
             <Footer />

@@ -1,15 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
     Code2, Youtube, Bot, Clock, Star,
     Crown, Sparkles, Zap, Globe, Users,
-    Pencil, ArrowRight, CheckCircle2
+    Pencil, ArrowRight, CheckCircle2, Loader2
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { useLang } from "@/context/LangContext";
 import { useAdmin } from "@/hooks/useAdmin";
 import { supabase } from "@/lib/supabase";
@@ -41,6 +42,7 @@ export default function Courses() {
     const router = useRouter();
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
+    const [navigatingId, setNavigatingId] = useState<string | null>(null);
 
     const load = async () => {
         try {
@@ -50,7 +52,103 @@ export default function Courses() {
                 .eq("is_visible", true)
                 .order("sort_order");
             if (error) console.error("[Courses] fetch error:", error.message);
-            setCourses(data || []);
+
+            let fetched = data || [];
+
+            // Add Shopee Affiliate if missing from DB
+            if (!fetched.some(c => c.id === "shopee-affiliate")) {
+                const shopeeCourse: Course = {
+                    id: "shopee-affiliate",
+                    title_vi: "Shopee Affiliate",
+                    title_en: "Shopee Affiliate",
+                    subtitle_vi: "Cơ bản đến Chuyên Sâu",
+                    subtitle_en: "Basic to Advanced",
+                    desc_vi: "Quy trình làm Affiliate bền vững trên Shopee",
+                    desc_en: "Sustainable Affiliate process on Shopee",
+                    badge_vi: "MỚI",
+                    badge_en: "NEW",
+                    accent_color: "#f97316",
+                    icon_name: "Globe",
+                    price_vi: "1999K",
+                    price_en: "1999K",
+                    duration: "3 clips",
+                    rating: "4.9",
+                    ai_label_vi: "Quy trình chuẩn",
+                    ai_label_en: "Standard Process",
+                    cta_type: "contact",
+                    cta_href: null,
+                    is_featured: false,
+                    is_visible: true,
+                    features_vi: [
+                        "Học qua Google Meet 3 buổi",
+                        "Quy trình chuẩn hóa, có thể mở rộng",
+                        "Triển khai không lộ mặt"
+                    ],
+                    features_en: [
+                        "3 Google Meet sessions",
+                        "Standardized, scalable process",
+                        "Faceless execution"
+                    ],
+                    sort_order: 4
+                };
+                fetched.push(shopeeCourse);
+            }
+
+            // Enrich all courses with scalable process element if applicable, to meet standard scalable process requirements
+            fetched = fetched.map(c => {
+                // Add HOT badge and update price to Youtube courses
+                if (c.id === "youtube-basic" || c.id === "youtube-advanced") {
+                    c.badge_vi = "HOT";
+                    c.badge_en = "HOT";
+                }
+                
+                if (c.id === "youtube-basic") {
+                    c.price_vi = "1999K";
+                    c.price_en = "1999K";
+                }
+
+                if (c.id === "youtube-advanced") {
+                    c.price_vi = null;
+                    c.price_en = null;
+                    c.features_vi = c.features_vi.map((f: string) => 
+                        f.replace("doanh thu 30 triệu/tháng", "đầu ra").replace("doanh thu", "đầu ra")
+                    );
+                    c.features_vi = c.features_vi.map((f: string) => 
+                        f.replace("Đảm bảo doanh thu 30 triệu/tháng", "Đảm bảo đầu ra")
+                    );
+                }
+
+                // Add group support feature to all courses
+                c.features_vi = c.features_vi.filter((f: string) => !f.toLocaleLowerCase().includes("nhóm"));
+                c.features_en = c.features_en.filter((f: string) => !f.toLocaleLowerCase().includes("group"));
+
+                if (c.id === "youtube-basic" || c.id === "youtube-advanced" || c.id === "shopee-affiliate") {
+                    c.features_vi.push("Vào nhóm riêng hỗ trợ & Cập nhật key");
+                    c.features_en.push("Private support group & Key updates");
+                } else {
+                    c.features_vi.push("Vào nhóm riêng hỗ trợ");
+                    c.features_en.push("Private group for support");
+                }
+
+                if (c.id === "vibecoding") {
+                    if (!c.features_vi.some((f: string) => f.includes("mở rộng"))) {
+                        return {
+                            ...c,
+                            features_vi: [...c.features_vi, "Quy trình chuẩn hóa, có thể mở rộng"],
+                            features_en: [...c.features_en, "Standardized, scalable process"],
+                            cta_type: c.price_vi ? "enroll" : "contact"
+                        };
+                    }
+                }
+                
+                c.cta_type = c.price_vi ? "enroll" : "contact";
+                
+                return c;
+            });
+
+            fetched = fetched.filter(c => c.id !== "vibecoding");
+            fetched.sort((a, b) => a.sort_order - b.sort_order);
+            setCourses(fetched);
         } catch {
             // Supabase unreachable
         }
@@ -59,13 +157,47 @@ export default function Courses() {
 
     useEffect(() => { load(); }, []);
 
+    const handleCardClick = useCallback((courseId: string) => {
+        if (navigatingId) return;
+        setNavigatingId(courseId);
+        router.push(`/courses/${courseId}?lang=${lang}`);
+    }, [navigatingId, router, lang]);
+
     if (loading) {
         return (
-            <section className="py-8 px-6">
+            <section id="courses" className="py-8 px-6">
+                <div className="section-divider mb-6" />
                 <div className="max-w-5xl mx-auto">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* Match the real header layout */}
+                    <div className="text-center mb-10">
+                        <div className="inline-block h-6 w-20 bg-muted/40 rounded-full mb-4" />
+                        <div className="h-12 w-72 bg-muted/30 rounded-xl mx-auto" />
+                    </div>
+                    {/* Match real card grid with proper card heights */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 p-2">
                         {[1, 2, 3].map(i => (
-                            <div key={i} className="rounded-3xl bg-card animate-pulse h-[340px]" />
+                            <div key={i} className="rounded-2xl border border-border/30 bg-card p-6 space-y-4 h-[380px]">
+                                <div className="flex justify-between items-start">
+                                    <div className="w-14 h-14 rounded-2xl bg-muted/40 animate-pulse" />
+                                    <div className="h-5 w-16 bg-muted/30 rounded-full" />
+                                </div>
+                                <div className="space-y-2">
+                                    <div className="h-6 w-3/4 bg-muted/30 rounded-lg animate-pulse" />
+                                    <div className="h-4 w-1/2 bg-muted/20 rounded-lg" />
+                                </div>
+                                <div className="space-y-2.5 flex-1">
+                                    {[1, 2, 3].map(j => (
+                                        <div key={j} className="flex items-center gap-2">
+                                            <div className="w-5 h-5 bg-muted/20 rounded-full flex-shrink-0" />
+                                            <div className="h-3.5 flex-1 bg-muted/15 rounded-lg" />
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="flex justify-between items-center pt-2 border-t border-border/20">
+                                    <div className="h-4 w-16 bg-muted/20 rounded-lg" />
+                                    <div className="h-9 w-24 bg-muted/30 rounded-xl animate-pulse" />
+                                </div>
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -78,7 +210,7 @@ export default function Courses() {
             <div className="section-divider mb-6" />
             <div className="max-w-5xl mx-auto">
 
-                {/* Header */}
+                {/* Header — original style */}
                 <div className="text-center mb-10">
                     <Badge
                         variant="outline"
@@ -100,8 +232,8 @@ export default function Courses() {
                     )}
                 </div>
 
-                {/* Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Grid with Aceternity hover effect */}
+                <HoverEffect className="gap-2">
                     {courses.map((c, index) => {
                         const Icon = ICON_MAP[c.icon_name] || Star;
                         const title = lang === "en" ? c.title_en : c.title_vi;
@@ -110,24 +242,23 @@ export default function Courses() {
                         const price = lang === "en" ? c.price_en : c.price_vi;
                         const accent = c.accent_color;
                         const features = lang === "en" ? (c.features_en || []) : (c.features_vi || []);
+                        const isNavigating = navigatingId === c.id;
 
                         return (
-                            <motion.div
+                            <div
                                 key={c.id}
-                                initial={{ opacity: 0, y: 28 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-40px" }}
-                                transition={{ duration: 0.45, delay: index * 0.1 }}
-                                className="group"
+                                className="h-full"
                             >
                                 <div
-                                    onClick={() => router.push(`/courses/${c.id}?lang=${lang}`)}
-                                    className={`relative rounded-3xl cursor-pointer h-full flex flex-col overflow-hidden
+                                    onClick={() => handleCardClick(c.id)}
+                                    className={`relative rounded-2xl cursor-pointer h-full flex flex-col overflow-hidden
+                                        bg-card border border-border/40
                                         transition-all duration-500 ease-out
-                                        hover:-translate-y-2
+                                        group-hover:border-border/60 group-hover:shadow-lg
+                                        ${isNavigating ? "pointer-events-none" : ""}
                                         ${c.is_featured
                                             ? "ring-2 ring-offset-2 ring-offset-background"
-                                            : "border border-border/40"
+                                            : ""
                                         }`}
                                     style={{
                                         ...(c.is_featured ? { ["--tw-ring-color" as string]: accent } : {}),
@@ -153,17 +284,24 @@ export default function Courses() {
                                         />
 
                                         <div className="relative flex items-start justify-between mb-4">
-                                            {/* Icon with gradient background */}
+                                            {/* Icon — shows loading spinner when navigating */}
                                             <motion.div
                                                 className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
                                                 style={{
                                                     background: `linear-gradient(135deg, ${accent}20, ${accent}08)`,
                                                     border: `1px solid ${accent}15`,
                                                 }}
-                                                whileHover={{ scale: 1.1, rotate: 6 }}
+                                                whileHover={!isNavigating ? { scale: 1.1, rotate: 6 } : {}}
                                                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
                                             >
-                                                <Icon className="w-5.5 h-5.5" style={{ color: accent }} />
+                                                {isNavigating ? (
+                                                    <Loader2
+                                                        className="w-5 h-5 animate-spin"
+                                                        style={{ color: accent }}
+                                                    />
+                                                ) : (
+                                                    <Icon className="w-5.5 h-5.5" style={{ color: accent }} />
+                                                )}
                                             </motion.div>
                                             <Badge
                                                 className="text-[9px] font-bold uppercase tracking-wider rounded-full px-2.5 py-1 border-0 shadow-sm"
@@ -240,6 +378,7 @@ export default function Courses() {
                                             <Button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
+                                                    if (navigatingId) return;
                                                     if (c.cta_href) window.open(c.cta_href, "_blank");
                                                     else document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
                                                 }}
@@ -263,17 +402,17 @@ export default function Courses() {
                                     {/* Hover glow effect for featured card */}
                                     {c.is_featured && (
                                         <div
-                                            className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                                            className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                                             style={{
                                                 boxShadow: `inset 0 0 0 1px ${accent}15, 0 25px 80px -20px ${accent}25`,
                                             }}
                                         />
                                     )}
                                 </div>
-                            </motion.div>
+                            </div>
                         );
                     })}
-                </div>
+                </HoverEffect>
 
                 <p className="text-center text-muted-foreground/30 text-[10px] mt-6 tracking-wide">
                     {t("Contact to get pricing · Lifetime access", "Liên hệ để hỏi học phí · Học trọn đời")}

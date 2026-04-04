@@ -4,15 +4,17 @@ import "./globals.css";
 import { AuthWrapper } from "@/context/AuthWrapper";
 
 const inter = Inter({
-  subsets: ["latin"],
+  subsets: ["latin", "vietnamese"],
   variable: "--font-inter",
-  display: "swap",
+  display: "optional",
+  preload: true,
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
-  display: "swap",
+  display: "optional",
+  preload: true,
 });
 
 export const metadata: Metadata = {

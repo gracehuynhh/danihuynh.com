@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Menu, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +14,7 @@ import { useLang } from "@/context/LangContext";
 import { useAuth } from "@/context/AuthContext";
 import { useAdmin } from "@/hooks/useAdmin";
 import { DaniLogo } from "@/components/DaniLogo";
-import AuthDialog from "@/components/AuthDialog";
+const AuthDialog = lazy(() => import("@/components/AuthDialog"));
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -99,11 +99,13 @@ export default function Navbar() {
                             </Button>
                         </>
                     ) : (
-                        <AuthDialog>
-                            <Button size="sm" className="btn-primary border-0 text-white rounded-lg px-4 cursor-pointer">
-                                {t("Sign In", "Đăng nhập")}
-                            </Button>
-                        </AuthDialog>
+                        <Suspense fallback={<Button size="sm" className="btn-primary border-0 text-white rounded-lg px-4 cursor-pointer">{t("Sign In", "Đăng nhập")}</Button>}>
+                            <AuthDialog>
+                                <Button size="sm" className="btn-primary border-0 text-white rounded-lg px-4 cursor-pointer">
+                                    {t("Sign In", "Đăng nhập")}
+                                </Button>
+                            </AuthDialog>
+                        </Suspense>
                     )}
                 </div>
 
@@ -144,11 +146,13 @@ export default function Navbar() {
                                             </a>
                                         </Button>
                                     ) : (
-                                        <AuthDialog>
-                                            <Button className="btn-primary border-0 text-white w-full cursor-pointer">
-                                                {t("Sign In", "Đăng nhập")}
-                                            </Button>
-                                        </AuthDialog>
+                                        <Suspense fallback={<Button className="btn-primary border-0 text-white w-full cursor-pointer">{t("Sign In", "Đăng nhập")}</Button>}>
+                                            <AuthDialog>
+                                                <Button className="btn-primary border-0 text-white w-full cursor-pointer">
+                                                    {t("Sign In", "Đăng nhập")}
+                                                </Button>
+                                            </AuthDialog>
+                                        </Suspense>
                                     )}
                                 </SheetClose>
                             </div>

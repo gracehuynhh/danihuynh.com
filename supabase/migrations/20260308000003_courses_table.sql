@@ -56,7 +56,7 @@ VALUES
     'youtube-basic', 'YouTube × AI', 'YouTube × AI', 'Khóa cơ bản', 'Basic Course',
     'Nắm vững nền tảng xây kênh YouTube từ số 0 bằng AI. 10 bài học video có cấu trúc từ chọn niche đến bật kiếm tiền.',
     'Master the fundamentals of building a YouTube channel from zero using AI tools. 10 structured video lessons covering everything from niche selection to monetization.',
-    '999K VNĐ', '999K VNĐ', '#ef4444', 'Youtube', '999K', '999K',
+    '1999K VNĐ', '1999K VNĐ', '#ef4444', 'Youtube', '1999K', '1999K',
     '10 clips', '4.8', 'Hỗ trợ AI', 'AI-Assisted', 'enroll', false, true,
     '["10 bài học video có cấu trúc","AI tools: Veo 3, ChatGPT, Dreamina","Từ zero đến bật kiếm tiền"]',
     '["10 structured video lessons","AI tools: Veo 3, ChatGPT, Dreamina","From zero to monetization"]',
@@ -81,5 +81,15 @@ VALUES
     '["Vibecoding: prompt → website chạy được","AI tools: v0, Cursor, Lovable, Bolt","Deploy dự án thực tế lên production"]',
     '["Vibecoding: prompt → working website","AI tools: v0, Cursor, Lovable, Bolt","Deploy real projects to production"]',
     3
+),
+(
+    'shopee-affiliate', 'Shopee Affiliate', 'Shopee Affiliate', 'Kiếm tiền với Shopee', 'Earn with Shopee',
+    'Khởi nghiệp với Shopee Affiliate. Học cách ra đơn, tối ưu affiliate, và kiếm tiền không cần vốn với Shopee. Học trực tiếp qua Google Meet trong 3 buổi.',
+    'Start with Shopee Affiliate. Learn how to get orders, optimize links, and earn money with zero capital. Live Google Meet classes, 3 sessions.',
+    '1999K VNĐ', '1999K VNĐ', '#ec4899', 'Globe', '1999K', '1999K',
+    '3 buổi', '5.0', 'Thực chiến', 'Hand-on', 'enroll', false, true,
+    '["Dạy trực tiếp qua Google Meet 3 buổi","Thực chiến chia sẻ màn hình","Từ chưa biết gì đến ra đơn Shopee"]',
+    '["Live on Google Meet for 3 sessions","Hands-on screen sharing","From zero to first Shopee order"]',
+    4
 )
 ON CONFLICT (id) DO NOTHING;

@@ -13,9 +13,8 @@ export function DaniLogo({ height = 40, className = "" }: DaniLogoProps) {
         <svg
             viewBox="46 265 1400 800"
             height={height}
-            width="auto"
             aria-label="dani"
-            className={className}
+            className={`w-auto ${className}`}
             style={{ overflow: "visible" }}
         >
             <defs>

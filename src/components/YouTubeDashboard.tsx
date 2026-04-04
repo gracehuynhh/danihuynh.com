@@ -104,8 +104,8 @@ function StatCard({ stat, index }: {
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0.15 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.3, delay: index * 0.06 }}
             className="relative"
@@ -269,8 +269,8 @@ export default function YouTubeDashboard() {
             <div className="max-w-5xl mx-auto">
 
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0.15 }}
+                    whileInView={{ opacity: 1 }}
                     viewport={{ once: true, margin: "-60px" }}
                     transition={{ duration: 0.5 }}
                     className="rounded-2xl border border-border bg-card shadow-sm overflow-hidden"
