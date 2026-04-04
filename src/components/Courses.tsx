@@ -294,14 +294,7 @@ export default function Courses() {
                                                 whileHover={!isNavigating ? { scale: 1.1, rotate: 6 } : {}}
                                                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
                                             >
-                                                {isNavigating ? (
-                                                    <Loader2
-                                                        className="w-5 h-5 animate-spin"
-                                                        style={{ color: accent }}
-                                                    />
-                                                ) : (
-                                                    <Icon className="w-5.5 h-5.5" style={{ color: accent }} />
-                                                )}
+                                                <Icon className="w-5.5 h-5.5" style={{ color: accent }} />
                                             </motion.div>
                                             <Badge
                                                 className="text-[9px] font-bold uppercase tracking-wider rounded-full px-2.5 py-1 border-0 shadow-sm"
@@ -391,10 +384,19 @@ export default function Courses() {
                                                     boxShadow: `0 4px 14px ${accent}25`,
                                                 }}
                                             >
-                                                {c.cta_type === "contact"
-                                                    ? t("Contact", "Liên hệ")
-                                                    : t("Enroll", "Đăng ký")}
-                                                <ArrowRight className="w-3.5 h-3.5 ml-1.5 transition-transform duration-300 group-hover:translate-x-1" />
+                                                {isNavigating ? (
+                                                    <>
+                                                        {t("Processing...", "Đang mở...")}
+                                                        <Loader2 className="w-3.5 h-3.5 ml-1.5 animate-spin" />
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        {c.cta_type === "contact"
+                                                            ? t("Contact", "Liên hệ")
+                                                            : t("Enroll", "Đăng ký")}
+                                                        <ArrowRight className="w-3.5 h-3.5 ml-1.5 transition-transform duration-300 group-hover:translate-x-1" />
+                                                    </>
+                                                )}
                                             </Button>
                                         </div>
                                     </div>
