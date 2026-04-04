@@ -8,6 +8,7 @@ import { ArrowDown, Users, BookOpen, Star, TrendingUp, Youtube, Bot, Sparkles, S
 import { useLang } from "@/context/LangContext";
 import FlipWords from "./FlipWords";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 const Player = dynamic(() => import("@lottiefiles/react-lottie-player").then(mod => mod.Player), {
     ssr: false,
@@ -179,14 +180,18 @@ export default function Hero() {
                         ))}
 
                         <motion.div
-                            className="absolute inset-0 flex items-center justify-center"
+                            className="absolute inset-[30px] rounded-full overflow-hidden border-[6px] border-background shadow-2xl z-10"
                             animate={{ scale: [1, 1.02, 1] }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                         >
-                            <div className="text-center">
-                                <div className="text-3xl font-black gradient-text">AI</div>
-                                <div className="text-[9px] text-muted-foreground/40 uppercase tracking-widest mt-0.5">Powered</div>
-                            </div>
+                            <Image
+                                src="/avatar.png"
+                                alt="Dani Huynh"
+                                fill
+                                className="object-cover object-center"
+                                sizes="(max-width: 768px) 250px, 320px"
+                                priority
+                            />
                         </motion.div>
                     </div>
                 </div>

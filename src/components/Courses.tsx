@@ -386,7 +386,7 @@ export default function Courses() {
                                             >
                                                 {isNavigating ? (
                                                     <>
-                                                        {t("Processing...", "Đang mở...")}
+                                                        {t("Processing...", "Đang mở lớp...")}
                                                         <Loader2 className="w-3.5 h-3.5 ml-1.5 animate-spin" />
                                                     </>
                                                 ) : (
