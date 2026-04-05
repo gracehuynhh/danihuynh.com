@@ -22,15 +22,11 @@ export default function DotDistortion({
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const mouseRef = useRef({ x: -1000, y: -1000 });
     const animRef = useRef<number>(0);
-    const isActiveRef = useRef(false); // Only animate when mouse is near
-
-    // Parse the alpha from the dotColor once, not every frame
-    const baseAlpha = parseFloat(dotColor.match(/[\d.]+\)$/)?.[0] || "0.12");
 
     const draw = useCallback(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        const ctx = canvas.getContext("2d", { alpha: true });
+        const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
         const dpr = window.devicePixelRatio || 1;
@@ -49,9 +45,6 @@ export default function DotDistortion({
         const my = mouseRef.current.y;
         const r2 = mouseRadius * mouseRadius;
 
-        // Pre-compute the color without alpha for reuse
-        const colorBase = dotColor.replace(/[\d.]+\)$/, "");
-
         for (let x = gap / 2; x < w; x += gap) {
             for (let y = gap / 2; y < h; y += gap) {
                 const dx = x - mx;
@@ -61,7 +54,7 @@ export default function DotDistortion({
                 let drawX = x;
                 let drawY = y;
                 let size = dotSize;
-                let alpha = baseAlpha;
+                let alpha = 1;
 
                 if (dist2 < r2) {
                     const dist = Math.sqrt(dist2);
@@ -71,34 +64,22 @@ export default function DotDistortion({
                     drawX += Math.cos(angle) * eased * distortionStrength;
                     drawY += Math.sin(angle) * eased * distortionStrength;
                     size = dotSize + eased * 1.5;
-                    alpha = (0.4 + eased * 0.6) * baseAlpha;
+                    alpha = 0.4 + eased * 0.6;
                 }
 
                 ctx.beginPath();
                 ctx.arc(drawX, drawY, size, 0, Math.PI * 2);
-                ctx.fillStyle = `${colorBase}${alpha})`;
+                ctx.fillStyle = dotColor.replace(/[\d.]+\)$/, `${alpha * parseFloat(dotColor.match(/[\d.]+\)$/)?.[0] || "0.12")})`);
                 ctx.fill();
             }
         }
 
-        // Only keep animating if mouse is active
-        if (isActiveRef.current) {
-            animRef.current = requestAnimationFrame(draw);
-        }
-    }, [dotColor, dotSize, gap, mouseRadius, distortionStrength, baseAlpha]);
-
-    // Draw once on mount to show static dots, then stop
-    const drawStatic = useCallback(() => {
-        mouseRef.current = { x: -1000, y: -1000 };
-        draw();
-    }, [draw]);
+        animRef.current = requestAnimationFrame(draw);
+    }, [dotColor, dotSize, gap, mouseRadius, distortionStrength]);
 
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-
-        // Initial static draw
-        drawStatic();
 
         const handleMouseMove = (e: MouseEvent) => {
             const rect = canvas.getBoundingClientRect();
@@ -106,28 +87,22 @@ export default function DotDistortion({
                 x: e.clientX - rect.left,
                 y: e.clientY - rect.top,
             };
-            if (!isActiveRef.current) {
-                isActiveRef.current = true;
-                animRef.current = requestAnimationFrame(draw);
-            }
         };
 
         const handleMouseLeave = () => {
             mouseRef.current = { x: -1000, y: -1000 };
-            isActiveRef.current = false;
-            // One last draw to reset dots to static positions
-            draw();
         };
 
-        canvas.addEventListener("mousemove", handleMouseMove, { passive: true });
+        canvas.addEventListener("mousemove", handleMouseMove);
         canvas.addEventListener("mouseleave", handleMouseLeave);
+        animRef.current = requestAnimationFrame(draw);
 
         return () => {
             canvas.removeEventListener("mousemove", handleMouseMove);
             canvas.removeEventListener("mouseleave", handleMouseLeave);
             cancelAnimationFrame(animRef.current);
         };
-    }, [draw, drawStatic]);
+    }, [draw]);
 
     return (
         <canvas

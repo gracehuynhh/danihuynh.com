@@ -212,24 +212,6 @@
   will-change: transform;
 }
 
-/* ───── Hero orbital animation — GPU-accelerated ───── */
-@keyframes hero-orbit-rotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-@keyframes hero-orbit-counter-rotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(-360deg); }
-}
-.hero-orbit {
-  animation: hero-orbit-rotate 40s linear infinite;
-  will-change: transform;
-}
-.hero-orbit-counter {
-  animation: hero-orbit-counter-rotate 40s linear infinite;
-  will-change: transform;
-}
-
 /* ───── CSS fade-in — removed, was causing CLS (opacity:0 → 1 shift) ───── */
 
 /* ───── Slow pulse for background blobs — opacity-only, no transform to prevent CLS ───── */
