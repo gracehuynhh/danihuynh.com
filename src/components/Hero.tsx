@@ -4,15 +4,9 @@ import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowDown, Users, BookOpen, Star, TrendingUp, Youtube, Bot, Sparkles, ShoppingCart } from "lucide-react";
+import { ArrowDown, Users, BookOpen, Star, TrendingUp, Youtube, Bot, Sparkles, ShoppingCart, Zap } from "lucide-react";
 import { useLang } from "@/context/LangContext";
 import FlipWords from "./FlipWords";
-import dynamic from "next/dynamic";
-import Image from "next/image";
-
-const Player = dynamic(() => import("@lottiefiles/react-lottie-player").then(mod => mod.Player), {
-    ssr: false,
-});
 
 // Lazy-load the canvas shader — it only works client-side, nothing to show on SSR
 const DotDistortion = lazy(() => import("./DotDistortion"));
@@ -24,13 +18,21 @@ const stats = [
     { icon: TrendingUp, value: "95%", en: "Success", vi: "Thành công" },
 ];
 
-const floatingItems = [
-    { icon: Youtube, color: "#ef4444", label: "YouTube", left: "8%", top: "8%", delay: 0 },
-    { icon: ShoppingCart, color: "#f97316", label: "Affiliate", left: "68%", top: "12%", delay: 0.3 },
-    { icon: Bot, color: "#8b5cf6", label: "AI Tools", left: "5%", top: "60%", delay: 0.6 },
+/* Orbiting icon items */
+const orbitItems = [
+    { icon: Youtube,      color: "#ef4444", label: "YouTube",   angle: 0,   orbitRadius: 130, size: 36, delay: 0 },
+    { icon: ShoppingCart,  color: "#f97316", label: "Affiliate", angle: 72,  orbitRadius: 125, size: 32, delay: 0.15 },
+    { icon: Bot,           color: "#8b5cf6", label: "AI Tools",  angle: 144, orbitRadius: 128, size: 34, delay: 0.3 },
+    { icon: Sparkles,      color: "#0ea5e9", label: "Skills",    angle: 216, orbitRadius: 126, size: 30, delay: 0.45 },
+    { icon: Zap,           color: "#eab308", label: "Income",    angle: 288, orbitRadius: 130, size: 32, delay: 0.6 },
 ];
 
-
+/* Hero entrance animations — subtle fade only, no layout shift */
+const fadeUp = (delay: number) => ({
+    initial: { opacity: 0, y: 14 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5, delay, ease: [0.25, 0.46, 0.45, 0.94] as const },
+});
 
 export default function Hero() {
     const { t } = useLang();
@@ -42,28 +44,18 @@ export default function Hero() {
                 <DotDistortion />
             </Suspense>
 
-            {/* Background blobs — contained to prevent CLS from sub-pixel rounding */}
+            {/* Background blobs — contained to prevent CLS */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ contain: 'strict' }}>
-                <div
-                    className="absolute top-1/4 left-1/3 w-[500px] h-[350px] rounded-full bg-primary/5 blur-[120px] animate-pulse-slow"
-                />
-                <div
-                    className="absolute bottom-1/3 right-1/4 w-[350px] h-[250px] rounded-full bg-violet-500/5 blur-[100px] animate-pulse-slow-delayed"
-                />
+                <div className="absolute top-1/4 left-1/3 w-[500px] h-[350px] rounded-full bg-primary/5 blur-[120px] animate-pulse-slow" />
+                <div className="absolute bottom-1/3 right-1/4 w-[350px] h-[250px] rounded-full bg-violet-500/5 blur-[100px] animate-pulse-slow-delayed" />
             </div>
 
             <div className="relative z-10 max-w-5xl mx-auto w-full">
                 <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-10">
-
-                    {/* Floating Money Lottie */}
-                    <div className="absolute hidden lg:block -right-10 -bottom-16 w-60 h-60 opacity-100 pointer-events-none z-10">
-                        <Player autoplay loop src="https://assets5.lottiefiles.com/packages/lf20_puciaact.json" style={{ height: '100%', width: '100%' }} />
-                    </div>
-
-                    {/* ===== LEFT: Text — all elements render at final position ===== */}
+                    {/* ===== LEFT: Text ===== */}
                     <div className="flex-1 text-center lg:text-left">
                         {/* Badge */}
-                        <div className="mb-5">
+                        <motion.div className="mb-5" {...fadeUp(0)}>
                             <Badge
                                 variant="outline"
                                 className="rounded-full border-primary/25 bg-primary/8 text-primary px-4 py-1 text-[11px] font-semibold uppercase tracking-widest gap-1.5"
@@ -71,16 +63,22 @@ export default function Hero() {
                                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                                 {t("Open · 2026", "Mở đăng ký · 2026")}
                             </Badge>
-                        </div>
+                        </motion.div>
 
-                        {/* Heading — renders immediately */}
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight mb-5">
+                        {/* Heading */}
+                        <motion.h1
+                            className="text-5xl md:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight mb-5"
+                            {...fadeUp(0.1)}
+                        >
                             <span className="hero-heading">{t("Make Money ", "Kiếm Tiền ")}{t("with ", "với ")}</span>
                             <span className="gradient-text">AI 2026</span>
-                        </h1>
+                        </motion.h1>
 
-                        {/* FlipWords — fixed min-height to prevent CLS during word swap */}
-                        <div className="text-muted-foreground text-base md:text-lg max-w-md mx-auto lg:mx-0 mb-7 leading-relaxed min-h-[1.75rem]">
+                        {/* FlipWords */}
+                        <motion.div
+                            className="text-muted-foreground text-base md:text-lg max-w-md mx-auto lg:mx-0 mb-7 leading-relaxed min-h-[1.75rem]"
+                            {...fadeUp(0.2)}
+                        >
                             {t("From day one", "Từ ngày đầu")}
                             {" · "}
                             <FlipWords
@@ -90,21 +88,20 @@ export default function Hero() {
                                 ).split(",")}
                                 className="text-foreground font-semibold"
                             />
-                        </div>
+                        </motion.div>
 
                         {/* CTAs */}
-                        <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-8">
+                        <motion.div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-8" {...fadeUp(0.3)}>
                             <Button asChild size="lg" className="btn-primary border-0 text-white rounded-xl px-8 font-semibold">
                                 <a href="#courses">{t("Browse Courses", "Xem khóa học")} →</a>
                             </Button>
                             <Button asChild size="lg" variant="outline" className="rounded-xl px-8 border-border text-muted-foreground hover:text-foreground hover:bg-secondary">
                                 <a href="#contact">{t("Contact", "Liên hệ")}</a>
                             </Button>
-                        </div>
+                        </motion.div>
 
                         {/* Trust markers & Stats */}
-                        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-center lg:justify-start gap-5">
-                            {/* Trust markers & Stats */}
+                        <motion.div className="flex flex-col sm:flex-row items-center sm:items-start justify-center lg:justify-start gap-5" {...fadeUp(0.4)}>
                             <div className="flex items-center gap-3">
                                 <div className="flex flex-col text-left">
                                     <div className="flex items-center gap-0.5">
@@ -133,63 +130,87 @@ export default function Hero() {
                                     </motion.div>
                                 ))}
                             </div>
-                        </div>
-                    </div>
-
-                    {/* ===== RIGHT: Animated Orb — position:absolute children, no CLS ===== */}
-                    <div className="hidden lg:block relative w-[320px] h-[320px] flex-shrink-0">
-                        <motion.div
-                            className="absolute inset-12 rounded-full"
-                            style={{
-                                background: "radial-gradient(circle, rgba(99,102,241,0.1) 0%, rgba(139,92,246,0.05) 50%, transparent 70%)",
-                            }}
-                            animate={{ scale: [1, 1.06, 1] }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                        />
-
-                        <motion.div
-                            className="absolute inset-8 rounded-full border border-dashed border-primary/12"
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                        />
-                        <motion.div
-                            className="absolute inset-20 rounded-full border border-dashed border-violet-400/8"
-                            animate={{ rotate: -360 }}
-                            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                        />
-
-                        {floatingItems.map((item, i) => (
-                            <motion.div
-                                key={item.label}
-                                className="absolute flex items-center gap-1.5 glass rounded-lg px-2.5 py-1.5 shadow-md cursor-default"
-                                style={{ left: item.left, top: item.top }}
-                                animate={{ y: [0, -6, 0] }}
-                                transition={{
-                                    y: { duration: 3 + i * 0.4, repeat: Infinity, ease: "easeInOut", delay: item.delay },
-                                }}
-                                whileHover={{ scale: 1.08, transition: { duration: 0.12 } }}
-                            >
-                                <div
-                                    className="w-7 h-7 rounded-md flex items-center justify-center"
-                                    style={{ background: `${item.color}15` }}
-                                >
-                                    <item.icon className="w-3.5 h-3.5" style={{ color: item.color }} />
-                                </div>
-                                <span className="text-[11px] font-semibold text-card-foreground">{item.label}</span>
-                            </motion.div>
-                        ))}
-
-                        <motion.div
-                            className="absolute inset-0 flex items-center justify-center"
-                            animate={{ scale: [1, 1.02, 1] }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                            <div className="text-center">
-                                <div className="text-3xl font-black gradient-text">AI</div>
-                                <div className="text-[9px] text-muted-foreground/40 uppercase tracking-widest mt-0.5">Powered</div>
-                            </div>
                         </motion.div>
                     </div>
+
+                    {/* ===== RIGHT: Orbital Animation ===== */}
+                    <motion.div
+                        className="hidden lg:block relative w-[320px] h-[320px] flex-shrink-0"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+                    >
+                        {/* Outer glow ring */}
+                        <div
+                            className="absolute inset-4 rounded-full"
+                            style={{
+                                background: "radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%)",
+                            }}
+                        />
+
+                        {/* Orbiting ring — CSS rotate for GPU acceleration */}
+                        <div className="absolute inset-0 hero-orbit">
+                            {orbitItems.map((item, i) => {
+                                const rad = (item.angle * Math.PI) / 180;
+                                const x = 160 + item.orbitRadius * Math.cos(rad) - item.size / 2;
+                                const y = 160 + item.orbitRadius * Math.sin(rad) - item.size / 2;
+                                return (
+                                    <motion.div
+                                        key={item.label}
+                                        className="absolute glass rounded-xl shadow-lg flex items-center justify-center"
+                                        style={{
+                                            width: item.size,
+                                            height: item.size,
+                                            left: x,
+                                            top: y,
+                                        }}
+                                        initial={{ opacity: 0, scale: 0 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: 0.5 + item.delay, duration: 0.4, type: "spring", stiffness: 260, damping: 20 }}
+                                    >
+                                        {/* Counter-rotate to keep icons upright */}
+                                        <div className="hero-orbit-counter flex items-center justify-center">
+                                            <item.icon className="w-4 h-4" style={{ color: item.color }} />
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
+                        </div>
+
+                        {/* Inner pulsing core */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <motion.div
+                                className="w-20 h-20 rounded-full flex items-center justify-center relative"
+                                style={{
+                                    background: "radial-gradient(circle, rgba(37,99,235,0.12) 0%, rgba(37,99,235,0.04) 60%, transparent 100%)",
+                                }}
+                                animate={{ scale: [1, 1.08, 1] }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                                {/* Ping ring */}
+                                <motion.div
+                                    className="absolute inset-0 rounded-full border border-primary/20"
+                                    animate={{ scale: [1, 1.6], opacity: [0.6, 0] }}
+                                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut" }}
+                                />
+                                <motion.div
+                                    className="absolute inset-0 rounded-full border border-primary/10"
+                                    animate={{ scale: [1, 2], opacity: [0.4, 0] }}
+                                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut", delay: 0.8 }}
+                                />
+                                <div className="text-center z-10">
+                                    <div className="text-2xl font-black gradient-text">AI</div>
+                                    <div className="text-[8px] text-muted-foreground/50 uppercase tracking-[0.2em] -mt-0.5">Powered</div>
+                                </div>
+                            </motion.div>
+                        </div>
+
+                        {/* Subtle connecting lines (decorative arcs) */}
+                        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 320 320">
+                            <circle cx="160" cy="160" r="128" fill="none" stroke="rgba(37,99,235,0.06)" strokeWidth="1" strokeDasharray="6 8" />
+                            <circle cx="160" cy="160" r="90" fill="none" stroke="rgba(139,92,246,0.04)" strokeWidth="0.5" strokeDasharray="4 6" />
+                        </svg>
+                    </motion.div>
                 </div>
             </div>
 
